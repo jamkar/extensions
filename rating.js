@@ -258,7 +258,7 @@
 		
 		function updateCardRating(cardElement, imdbRating) {
 			var tmdbRating = $('.card__vote', cardElement).text();
-			$('.card__vote', cardElement).html(`TMDB: ${tmdbRating}<br>IMDb: ${imdbRating}`);
+			$('.card__vote', cardElement).html(`TMDB: ${tmdbRating}<br>IMDB: ${imdbRating}`).css('text-align', 'end');
 		}
 		
 		Lampa.Listener.follow('line', (event) => {
@@ -286,6 +286,9 @@
 							}
 						})
 						.fail(() => console.log('OMDb API error for:', imdb_id));
+					} else {
+						var tmdbRating = $('.card__vote', cardElement).text();
+						$('.card__vote', cardElement).html(`TMDB: ${tmdbRating}`).css('text-align', 'end');
 					}
 				});
 			}
