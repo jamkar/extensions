@@ -268,24 +268,25 @@
 			if(event.type === 'create') {  
 				// event.data contains the result set  
 				// event.items contains the card instances  
-				event.data.results.forEach((cardData, index) => {  
+				event.data.results.forEach((cardData) => {  
 					// Access each card's data here  
-					console.log('Card data:', cardData)  
-					// You can fetch IMDb rating for cardData.imdb_id  
-									// $('.card__vote').text(imdb_rating);
-					// Check if IMDb ID is missing  
-					if(!cardData.imdb_id /*&& cardData.source === 'tmdb'**/) {  
+					console.log('Card data:', cardData) 
 						// Fetch it using the external_imdb_id function  
-						Lampa.Api.sources.tmdb.external_imdb_id({  
-							type: cardData.name ? 'tv' : 'movie',  
-							id: cardData.id  
-						}, (imdb_id) => {  
-							// Now you have the IMDb ID  
-							cardData.imdb_id = imdb_id  
-							// Fetch rating from OMDb API or similar  
-							console.log('imdb_id:', imdb_id)  
-						})  
-					} 
+					Lampa.Api.sources.tmdb.external_imdb_id({  
+						type: cardData.name ? 'tv' : 'movie',  
+						id: cardData.id  
+					}, (imdb_id) => {  
+						// Fetch rating from OMDb API
+						console.log('imdb_id:', imdb_id)
+						if (imdb_id) {
+							$.get(`http://www.omdbapi.com/?i=${imdb_id}&apikey=2a9eadde`, function(data) {
+								if (data.imdbRating && data.imdbRating !== 'N/A') {
+									$('.card__vote').text($('.card__vote').text() + ' IMDb: ' + data.imdbRating);
+								}
+							});
+						}
+					})  
+					
 				})  
 			}  
 		})
