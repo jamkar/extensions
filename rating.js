@@ -273,6 +273,19 @@
 					console.log('Card data:', cardData)  
 					// You can fetch IMDb rating for cardData.imdb_id  
 									// $('.card__vote').text(imdb_rating);
+					// Check if IMDb ID is missing  
+					if(!cardData.imdb_id && cardData.source === 'tmdb') {  
+						// Fetch it using the external_imdb_id function  
+						Lampa.Api.sources.tmdb.external_imdb_id({  
+							type: cardData.name ? 'tv' : 'movie',  
+							id: cardData.id  
+						}, (imdb_id) => {  
+							// Now you have the IMDb ID  
+							cardData.imdb_id = imdb_id  
+							// Fetch rating from OMDb API or similar  
+							console.log('imdb_id:', imdb_id)  
+						})  
+					} 
 				})  
 			}  
 		})
