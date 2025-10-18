@@ -3,7 +3,6 @@
 
 	function rating_kp_imdb(card) {
 		var network = new Lampa.Reguest();
-		console.log('network: ', network);
 		var clean_title = kpCleanTitle(card.title);
 		var search_date = card.release_date || card.first_air_date || card.last_air_date || '0000';
 		var search_year = parseInt((search_date + '').slice(0, 4));
@@ -127,6 +126,7 @@
 						network.clear();
 						network.timeout(15000);
 						network.silent(params.url + 'api/v2.2/films/' + id, function (data) {
+							console.log('data: ', data);
 							var movieRating = _setCache(params.id, {
 								kp: data.ratingKinopoisk,
 								imdb: data.ratingImdb,
