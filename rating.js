@@ -265,14 +265,54 @@
 			}
 		});
 		Lampa.Listener.follow('line', (event) => {  
-			if(event.type === 'create') {  
-				// event.data contains the result set  
-				// event.items contains the card instances  
-				event.data.results.forEach((cardData, index) => {  
-					// Access each card's data here  
-					console.log('Card data:', cardData) 
-						// Fetch it using the external_imdb_id function  
-					Lampa.Api.sources.tmdb.external_imdb_id({  
+			// if(event.type === 'create') {  
+			// 	// event.data contains the result set  
+			// 	// event.items contains the card instances  
+			// 	event.data.results.forEach((cardData, index) => {  
+			// 		// Access each card's data here  
+			// 		console.log('Card data:', cardData) 
+			// 			// Fetch it using the external_imdb_id function  
+			// 		Lampa.Api.sources.tmdb.external_imdb_id({  
+			// 			type: cardData.name ? 'tv' : 'movie',  
+			// 			id: cardData.id  
+			// 		}, (imdb_id) => {  
+			// 			// Fetch rating from OMDb API
+			// 			console.log('imdb_id:', imdb_id)
+			// 			if (imdb_id) {
+			// 				$.get(`http://www.omdbapi.com/?i=${imdb_id}&apikey=2a9eadde`, function(data) {
+			// 					if (data.imdbRating && data.imdbRating !== 'N/A') {
+			// 						console.log('event.items: ', event.items, 'index: ', index);
+			// 						var cardInstance = event.items[index];
+            //     					var cardElement = cardInstance.render(); 
+			// 						$('.card__vote', cardElement).text($('.card__vote', cardElement).text() + ' IMDb: ' + data.imdbRating);
+			// 					}
+			// 				});
+			// 			}
+			// 		})  
+					
+			// 	})  
+			// }
+			if(event.type === 'append') {  
+				// event.items now contains all cards created so far  
+				// The last item in the array is the newly appended card  
+				let cardInstance = event.items[event.items.length - 1]  
+				let cardElement = cardInstance.render(true)  
+				let cardData = cardElement.card_data // The data is stored on the element  
+				
+				// Now fetch and set the rating  
+				// fetchImdbRating(cardData.id).then(rating => {  
+				// 	let voteElement = cardElement.querySelector('.card__vote')  
+				// 	if(voteElement) {  
+				// 		voteElement.innerText = rating >= 10 ? 10 : rating  
+				// 	} else {  
+				// 		let vote_elem = document.createElement('div')  
+				// 		vote_elem.classList.add('card__vote')  
+				// 		vote_elem.innerText = rating >= 10 ? 10 : rating  
+				// 		cardElement.querySelector('.card__view').appendChild(vote_elem)  
+				// 	}  
+				// })  
+
+				Lampa.Api.sources.tmdb.external_imdb_id({  
 						type: cardData.name ? 'tv' : 'movie',  
 						id: cardData.id  
 					}, (imdb_id) => {  
@@ -288,10 +328,8 @@
 								}
 							});
 						}
-					})  
-					
-				})  
-			}  
+					})
+			} 
 		})
 	}
 	if (!window.rating_plugin) startPlugin();
