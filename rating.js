@@ -268,7 +268,7 @@
 			if(event.type === 'create') {  
 				// event.data contains the result set  
 				// event.items contains the card instances  
-				event.data.results.forEach((cardData) => {  
+				event.data.results.forEach((cardData, index) => {  
 					// Access each card's data here  
 					console.log('Card data:', cardData) 
 						// Fetch it using the external_imdb_id function  
