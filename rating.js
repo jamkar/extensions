@@ -126,7 +126,6 @@
 						network.clear();
 						network.timeout(15000);
 						network.silent(params.url + 'api/v2.2/films/' + id, function (data) {
-							console.log('data: ', data);
 							var movieRating = _setCache(params.id, {
 								kp: data.ratingKinopoisk,
 								imdb: data.ratingImdb,
@@ -250,7 +249,6 @@
 				$('.wait_rating', render).remove();
 				$('.rate--imdb', render).removeClass('hide').find('> div').eq(0).text(imdb_rating);
 				$('.rate--kp', render).removeClass('hide').find('> div').eq(0).text(kp_rating);
-				$('.card__vote').text(imdb_rating);
 			}
 		}
 	}
@@ -266,6 +264,18 @@
 				}
 			}
 		});
+		Lampa.Listener.follow('line', (event) => {  
+			if(event.type === 'create') {  
+				// event.data contains the result set  
+				// event.items contains the card instances  
+				event.data.results.forEach((cardData, index) => {  
+					// Access each card's data here  
+					console.log('Card data:', cardData)  
+					// You can fetch IMDb rating for cardData.imdb_id  
+									// $('.card__vote').text(imdb_rating);
+				})  
+			}  
+		})
 	}
 	if (!window.rating_plugin) startPlugin();
 })();
