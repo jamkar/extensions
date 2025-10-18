@@ -322,8 +322,8 @@
 							$.get(`http://www.omdbapi.com/?i=${imdb_id}&apikey=2a9eadde`, function(data) {
 								if (data.imdbRating && data.imdbRating !== 'N/A') {
 									console.log('event.items: ', event.items, 'index: ', index);
-									var cardInstance = event.items[index];
-                					var cardElement = cardInstance.render(); 
+									// var cardInstance = event.items[index];
+                					// var cardElement = cardInstance.render(); 
 									$('.card__vote', cardElement).text($('.card__vote', cardElement).text() + ' IMDb: ' + data.imdbRating);
 								}
 							});
