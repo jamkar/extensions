@@ -249,6 +249,7 @@
 				$('.wait_rating', render).remove();
 				$('.rate--imdb', render).removeClass('hide').find('> div').eq(0).text(imdb_rating);
 				$('.rate--kp', render).removeClass('hide').find('> div').eq(0).text(kp_rating);
+				$('.card__vote').text(imdb_rating);
 			}
 		}
 	}
