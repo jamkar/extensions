@@ -290,16 +290,14 @@
 		});
 	}
 
-	var timeCodeServerUrl = 'http://192.168.0.183:8090';
-
 	function timeCodeSync() {
+		var timeCodeServerUrl = 'http://192.168.0.183:8090';
+
+		// Send timecode data to server
 		Lampa.Timeline.listener.follow('update', (event) => {  
 			let { hash, road } = event.data;  
-
-			console.log('hash: ',hash)
-			console.log('road: ', road)
+			console.log('Sending timecode data to server for hash: ', hash);
 			
-			// Send to your server  
 			fetch(`${timeCodeServerUrl}/data/${hash}`, {  
 				method: 'POST',  
 				headers: { 'Content-Type': 'application/json' },  
@@ -307,22 +305,20 @@
 			});  
 		});
 		
+		// Get timecode data from server and update timeline view
 		let originalView = Lampa.Timeline.view;  
 		Lampa.Timeline.view = function(hash) {  
 			// Get local data first  
 			let localData = originalView.call(this, hash);
-
-			console.log('Timeline view. Hash: ', hash);
 			
 			// Fetch from your backend  
 			fetch(`${timeCodeServerUrl}/data/${hash}`)  
 				.then(res => res.json())  
 				.then(serverData => {  
-					console.log('serverData: ', serverData);
-
+					console.log('Recieved timecode data for hash: ', hash);
 					if (serverData && serverData.time > localData.time) {  
 						// Server has newer data, update local  
-						console.log('updating time for hash: ', hash)
+						console.log('Updating timeline for hash: ', hash);
 						Lampa.Timeline.update({  
 							hash: hash,  
 							percent: serverData.percent,  
@@ -350,7 +346,6 @@
 		});
 
 		addImdbToCards();
-
 		timeCodeSync();
 	}
 	if (!window.rating_plugin) startPlugin();
