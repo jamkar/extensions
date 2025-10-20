@@ -315,7 +315,7 @@
 			console.log('Timeline view. Hash: ', hash);
 			
 			// Fetch from your backend  
-			fetch('{timeCodeServerUrl}/' + hash)  
+			fetch(`${timeCodeServerUrl}/data/${hash}`)  
 				.then(res => res.json())  
 				.then(serverData => {  
 					console.log('serverData: ', serverData);
