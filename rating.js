@@ -298,7 +298,7 @@
 			console.log('road: ', road)
 			
 			// Send to your server  
-			fetch(`http://localhost:8090/data/${hash}}`, {  
+			fetch(`http://localhost:8090/data/${hash}`, {  
 				method: 'POST',  
 				headers: { 'Content-Type': 'application/json' },  
 				body: JSON.stringify(road)  
