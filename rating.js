@@ -256,7 +256,7 @@
 	function addImdbToCards() {		
 		function addImdbRating(cardElement, imdbRating) {
 			var existingLabel = $('.card__vote', cardElement).text();
-			$('.card__vote', cardElement).html(`${existingLabel}<br>IMDB: ${imdbRating}`);
+			$('.card__vote', cardElement).html(`IMDB: ${imdbRating}<br>${existingLabel}`);
 		}
 
 		function formatTmdbRating(cardElement) {
