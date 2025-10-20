@@ -290,6 +290,28 @@
 		});
 	}
 
+	function timeCodeSync() {
+		Lampa.Timeline.listener.follow('update', (event) => {  
+			let { hash, road } = event.data;  
+
+			console.log('hash: ',hash)
+			console.log('road: ', road)
+			
+			// Send to your server  
+			// fetch('https://your-server.com/api/timeline', {  
+			// 	method: 'POST',  
+			// 	headers: { 'Content-Type': 'application/json' },  
+			// 	body: JSON.stringify({  
+			// 		hash: hash,  
+			// 		percent: road.percent,  
+			// 		time: road.time,  
+			// 		duration: road.duration,  
+			// 		profile: road.profile  
+			// 	})  
+			// });  
+		});
+	}
+
 	function startPlugin() {
 		window.rating_plugin = true;
 		Lampa.Listener.follow('full', function (e) {
@@ -303,6 +325,8 @@
 		});
 
 		addImdbToCards();
+
+		timeCodeSync();
 	}
 	if (!window.rating_plugin) startPlugin();
 })();
