@@ -298,18 +298,36 @@
 			console.log('road: ', road)
 			
 			// Send to your server  
-			// fetch('https://your-server.com/api/timeline', {  
-			// 	method: 'POST',  
-			// 	headers: { 'Content-Type': 'application/json' },  
-			// 	body: JSON.stringify({  
-			// 		hash: hash,  
-			// 		percent: road.percent,  
-			// 		time: road.time,  
-			// 		duration: road.duration,  
-			// 		profile: road.profile  
-			// 	})  
-			// });  
+			fetch(`http://localhost:8090/data/${hash}}`, {  
+				method: 'POST',  
+				headers: { 'Content-Type': 'application/json' },  
+				body: JSON.stringify(road)  
+			});  
 		});
+		
+		let originalView = Lampa.Timeline.view;  
+		Lampa.Timeline.view = function(hash) {  
+			// Get local data first  
+			let localData = originalView.call(this, hash);  
+			
+			// Fetch from your backend  
+			fetch('https://your-server.com/api/timeline/' + hash)  
+				.then(res => res.json())  
+				.then(serverData => {  
+					if (serverData && serverData.time > localData.time) {  
+						// Server has newer data, update local  
+						Lampa.Timeline.update({  
+							hash: hash,  
+							percent: serverData.percent,  
+							time: serverData.time,  
+							duration: serverData.duration,  
+							profile: serverData.profile  
+						}, true);  
+					}  
+				});  
+			
+			return localData;  
+		};
 	}
 
 	function startPlugin() {
