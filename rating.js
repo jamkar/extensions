@@ -291,7 +291,7 @@
 	}
 
 	function timeCodeSync() {
-		var timeCodeServerUrl = 'http://192.168.0.183:8090';
+		var timeCodeServerUrl = 'https://timecode-sync.vercel.app';
 
 		// Send timecode data to server
 		Lampa.Timeline.listener.follow('update', (event) => {  
