@@ -290,7 +290,7 @@
 		});
 	}
 
-	var timeCodeServerUrl = 'http://localhost:8090';
+	var timeCodeServerUrl = 'http://192.168.0.183:8090';
 
 	function timeCodeSync() {
 		Lampa.Timeline.listener.follow('update', (event) => {  
@@ -319,8 +319,10 @@
 				.then(res => res.json())  
 				.then(serverData => {  
 					console.log('serverData: ', serverData);
+
 					if (serverData && serverData.time > localData.time) {  
 						// Server has newer data, update local  
+						console.log('updating time for hash: ', hash)
 						Lampa.Timeline.update({  
 							hash: hash,  
 							percent: serverData.percent,  
