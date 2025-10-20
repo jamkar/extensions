@@ -290,6 +290,8 @@
 		});
 	}
 
+	var timeCodeServerUrl = 'http://localhost:8090';
+
 	function timeCodeSync() {
 		Lampa.Timeline.listener.follow('update', (event) => {  
 			let { hash, road } = event.data;  
@@ -298,7 +300,7 @@
 			console.log('road: ', road)
 			
 			// Send to your server  
-			fetch(`http://localhost:8090/data/${hash}`, {  
+			fetch(`${timeCodeServerUrl}/data/${hash}`, {  
 				method: 'POST',  
 				headers: { 'Content-Type': 'application/json' },  
 				body: JSON.stringify(road)  
@@ -308,12 +310,15 @@
 		let originalView = Lampa.Timeline.view;  
 		Lampa.Timeline.view = function(hash) {  
 			// Get local data first  
-			let localData = originalView.call(this, hash);  
+			let localData = originalView.call(this, hash);
+
+			console.log('Timeline view. Hash: ', hash);
 			
 			// Fetch from your backend  
-			fetch('https://your-server.com/api/timeline/' + hash)  
+			fetch('{timeCodeServerUrl}/' + hash)  
 				.then(res => res.json())  
 				.then(serverData => {  
+					console.log('serverData: ', serverData);
 					if (serverData && serverData.time > localData.time) {  
 						// Server has newer data, update local  
 						Lampa.Timeline.update({  
