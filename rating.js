@@ -304,33 +304,50 @@
 				body: JSON.stringify(road)  
 			});  
 		});
+
+		// Listen for player creation and update timeline before playback  
+		Lampa.Player.listener.follow('create', async (e) => {  
+			if (e.data.timeline) {  
+				const serverData = await fetch(`${timeCodeServerUrl}/data/${e.data.timeline.hash}`)  
+					.then(res => res.json());  
+				console.log('Recieved timecode data for hash: ', e.data.timeline.hash);
+				if (serverData && serverData.time > e.data.timeline.time) {  
+					// Server has newer data, update local  
+					console.log('Updating timeline for hash: ', hash);
+					e.data.timeline.time = serverData.time;  
+					e.data.timeline.percent = serverData.percent;  
+					e.data.timeline.duration = serverData.duration;  
+					e.data.timeline.profile = serverData.profile;  
+				}  
+			}  
+		});
 		
 		// Get timecode data from server and update timeline view
-		let originalView = Lampa.Timeline.view;  
-		Lampa.Timeline.view = function(hash) {  
-			// Get local data first  
-			let localData = originalView.call(this, hash);
+		// let originalView = Lampa.Timeline.view;  
+		// Lampa.Timeline.view = function(hash) {  
+		// 	// Get local data first  
+		// 	let localData = originalView.call(this, hash);
 			
-			// Fetch from your backend  
-			fetch(`${timeCodeServerUrl}/data/${hash}`)  
-				.then(res => res.json())  
-				.then(serverData => {  
-					console.log('Recieved timecode data for hash: ', hash);
-					if (serverData && serverData.time > localData.time) {  
-						// Server has newer data, update local  
-						console.log('Updating timeline for hash: ', hash);
-						Lampa.Timeline.update({  
-							hash: hash,  
-							percent: serverData.percent,  
-							time: serverData.time,  
-							duration: serverData.duration,  
-							profile: serverData.profile  
-						}, true);  
-					}  
-				});  
+		// 	// Fetch from your backend  
+		// 	fetch(`${timeCodeServerUrl}/data/${hash}`)  
+		// 		.then(res => res.json())  
+		// 		.then(serverData => {  
+		// 			console.log('Recieved timecode data for hash: ', hash);
+		// 			if (serverData && serverData.time > localData.time) {  
+		// 				// Server has newer data, update local  
+		// 				console.log('Updating timeline for hash: ', hash);
+		// 				Lampa.Timeline.update({  
+		// 					hash: hash,  
+		// 					percent: serverData.percent,  
+		// 					time: serverData.time,  
+		// 					duration: serverData.duration,  
+		// 					profile: serverData.profile  
+		// 				}, true);  
+		// 			}  
+		// 		});  
 			
-			return localData;  
-		};
+		// 	return localData;  
+		// };
 	}
 
 	function startPlugin() {
