@@ -313,7 +313,7 @@
 				console.log('Recieved player timecode data for hash: ', e.data.timeline.hash, 'data: ', serverData);
 				if (serverData && serverData.time > e.data.timeline.time) {  
 					// Server has newer data, update local  
-					console.log('Updating timeline on player for hash: ', hash, 'data: ', serverData);
+					console.log('Updating timeline on player for hash: ', e.data.timeline.hash, 'data: ', serverData);
 					e.data.timeline.time = serverData.time;  
 					e.data.timeline.percent = serverData.percent;  
 					e.data.timeline.duration = serverData.duration;  
@@ -335,7 +335,7 @@
 					console.log('Recieved view timecode data for hash: ', hash, 'data: ', serverData);
 					if (serverData && serverData.time > localData.time) {  
 						// Server has newer data, update local  
-						console.log('Updating timeline on view for hash: ', hash, 'data: ', data);
+						console.log('Updating timeline on view for hash: ', hash, 'data: ', serverData);
 						Lampa.Timeline.update({  
 							hash: hash,  
 							percent: serverData.percent,  
