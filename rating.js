@@ -270,22 +270,24 @@
 				var cardElement = cardInstance.render(true);
 				var cardData = cardElement.card_data;
 
-				formatTmdbRating(cardElement);
-				
-				Lampa.Api.sources.tmdb.external_imdb_id({
-					type: cardData.name ? 'tv' : 'movie',
-					id: cardData.id
-				}, (imdb_id) => {
-					if (imdb_id) {
-						$.get(`http://www.omdbapi.com/?i=${imdb_id}&apikey=2a9eadde`)
-						.done(function(data) {
-							if (data.imdbRating && data.imdbRating !== 'N/A') {
-								addImdbRating(cardElement, data.imdbRating);
-							}
-						})
-						.fail(() => console.log('OMDb API error for:', imdb_id));
-					}
-				});
+				if(cardData) {
+					formatTmdbRating(cardElement);
+					
+					Lampa.Api.sources.tmdb.external_imdb_id({
+						type: cardData.name ? 'tv' : 'movie',
+						id: cardData.id
+					}, (imdb_id) => {
+						if (imdb_id) {
+							$.get(`http://www.omdbapi.com/?i=${imdb_id}&apikey=2a9eadde`)
+							.done(function(data) {
+								if (data.imdbRating && data.imdbRating !== 'N/A') {
+									addImdbRating(cardElement, data.imdbRating);
+								}
+							})
+							.fail(() => console.log('OMDb API error for:', imdb_id));
+						}
+					});
+				}
 			}
 		});
 	}
