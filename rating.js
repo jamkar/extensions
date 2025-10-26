@@ -254,14 +254,8 @@
 	}
 
 	function addImdbToCards() {		
-		function addImdbRating(cardElement, imdbRating) {
-			var existingLabel = $('.card__vote', cardElement).text();
-			$('.card__vote', cardElement).html(`IMDB: ${imdbRating}<br>${existingLabel}`);
-		}
-
-		function formatTmdbRating(cardElement) {
-			var tmdbRating = $('.card__vote', cardElement).text();
-			$('.card__vote', cardElement).html(`TMDB: ${tmdbRating}`).css('text-align', 'end');
+		function replaceWithImdbRating(cardElement, imdbRating) {
+			$('.card__vote', cardElement).html(imdbRating);
 		}
 		
 		Lampa.Listener.follow('line', (event) => {
@@ -281,7 +275,7 @@
 							$.get(`http://www.omdbapi.com/?i=${imdb_id}&apikey=2a9eadde`)
 							.done(function(data) {
 								if (data.imdbRating && data.imdbRating !== 'N/A') {
-									addImdbRating(cardElement, data.imdbRating);
+									replaceWithImdbRating(cardElement, data.imdbRating);
 								}
 							})
 							.fail(() => console.log('OMDb API error for:', imdb_id));
