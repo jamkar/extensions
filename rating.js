@@ -255,7 +255,7 @@
 
 	function addImdbToCards() {		
 		function replaceWithImdbRating(cardElement, imdbRating) {
-			$('.card__vote', cardElement).html(imdbRating);
+			$('.card__vote', cardElement).text(imdbRating);
 		}
 		
 		Lampa.Listener.follow('line', (event) => {
