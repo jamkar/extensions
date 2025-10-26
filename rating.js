@@ -265,7 +265,6 @@
 				var cardData = cardElement.card_data;
 
 				if(cardData) {
-					formatTmdbRating(cardElement);
 					
 					Lampa.Api.sources.tmdb.external_imdb_id({
 						type: cardData.name ? 'tv' : 'movie',
