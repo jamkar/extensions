@@ -357,7 +357,7 @@
 			}
 		});
 
-		addImdbToCards();
+		//addImdbToCards();
 		timeCodeSync();
 	}
 	if (!window.rating_plugin) startPlugin();
